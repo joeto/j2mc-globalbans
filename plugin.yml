@@ -1,0 +1,15 @@
+name: J2MC_GlobalBans
+main: to.joe.j2mc.globalbans.J2MC_GlobalBans
+version: 1.0
+website: http://forums.joe.to
+author: J2 Minecraft Plugin Team
+description: Global Bans info module
+commands:
+  lookup:
+    description: Retrieve a user's global ban info
+    usage: /lookup <username>
+    permission: j2mc.globalbans.lookup
+    permission-message: You cannot do this
+permissions:
+  j2mc.globalbans.lookup:
+    description: Hunt them all down
