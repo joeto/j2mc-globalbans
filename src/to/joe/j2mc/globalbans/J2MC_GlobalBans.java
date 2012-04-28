@@ -68,12 +68,14 @@ public class J2MC_GlobalBans extends JavaPlugin implements Listener {
         }
     }
 
+    @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         for (final BanSystem system : this.systems) {
             system.playerJoin(event.getPlayer());
         }
     }
 
+    @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         for (final BanSystem system : this.systems) {
             system.playerQuit(event.getPlayer());
