@@ -7,30 +7,20 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import to.joe.j2mc.globalbans.mcbans.MCBans;
+
 public class J2MC_GlobalBans extends JavaPlugin implements Listener {
-    
-    @Override
-    public void onEnable(){
-        this.getServer().getPluginManager().registerEvents(this, this);
-    }
-    
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event){
-        
-    }
-    
-    public void schedule(Runnable run){
-        getServer().getScheduler().scheduleAsyncDelayedTask(this, run);
-    }
-    
-    protected String APICall(String url, HashMap<String, String> POSTData) {
+
+    public static String APICall(String url, HashMap<String, String> POSTData) {
         try {
             final StringBuilder stringBuilder = new StringBuilder();
             for (final Map.Entry<String, String> entry : POSTData.entrySet()) {
@@ -62,5 +52,32 @@ public class J2MC_GlobalBans extends JavaPlugin implements Listener {
             return "";
         }
     }
-    
+
+    private HashSet<BanSystem> systems;
+
+    @Override
+    public void onEnable() {
+        this.systems = new HashSet<BanSystem>();
+        this.getServer().getPluginManager().registerEvents(this, this);
+        final String mcbansapi = this.getConfig().getString("mcbans.api");
+        if ((mcbansapi != null) && (mcbansapi.length() > 1)) {
+            this.systems.add(new MCBans(this, mcbansapi));
+            this.getLogger().info("Hooking mcbans");
+        } else {
+            this.getLogger().info("Not hooking mcbans");
+        }
+    }
+
+    public void onJoin(PlayerJoinEvent event) {
+        for (final BanSystem system : this.systems) {
+            system.playerJoin(event.getPlayer());
+        }
+    }
+
+    public void onQuit(PlayerQuitEvent event) {
+        for (final BanSystem system : this.systems) {
+            system.playerQuit(event.getPlayer());
+        }
+    }
+
 }
