@@ -35,7 +35,7 @@ public class MCBans implements BanSystem {
         POSTData.put("player", player.getName());
         POSTData.put("playerip", player.getAddress().getAddress().getHostAddress());
         POSTData.put("exec", "playerConnect");
-        this.plugin.getServer().getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
             @Override
             public void run() {
                 MCBans.APICall(POSTData);
@@ -48,7 +48,7 @@ public class MCBans implements BanSystem {
         final HashMap<String, String> POSTData = new HashMap<String, String>();
         POSTData.put("player", player.getName());
         POSTData.put("exec", "playerDisconnect");
-        this.plugin.getServer().getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
             @Override
             public void run() {
                 MCBans.APICall(POSTData);
@@ -69,7 +69,7 @@ public class MCBans implements BanSystem {
         POSTData.put("playerList", playerList.toString());
         POSTData.put("version", "1.3.3.7");
         POSTData.put("exec", "callBack");
-        this.plugin.getServer().getScheduler().scheduleAsyncDelayedTask(this.plugin, new Runnable() {
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, new Runnable() {
             @Override
             public void run() {
                 MCBans.APICall(POSTData);
